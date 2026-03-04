@@ -26,7 +26,7 @@
 
   var SOCIA_CONFIG = {
     storeId: 129803252,
-    publicToken: public_jHiUPyUbc8tkgmNjDNyRWEMV3xRqsrxz
+    publicToken: 'public_REPLACE_WITH_REAL_TOKEN',
     apiBase: 'https://app.ecwid.com/api/v3'
   };
 
@@ -69,32 +69,23 @@
   var STYLE_ID = 'socia-test-style';
 
   function onEcwidReady(cb) {
-    function runSafe() {
-      try {
-        cb();
-      } catch (_) {}
-    }
-
-    if (window.Ecwid && window.Ecwid.OnAPILoaded && typeof window.Ecwid.OnAPILoaded.add === 'function') {
-      window.Ecwid.OnAPILoaded.add(function () {
-        runSafe();
-      });
-      return;
-    }
-
-    var attempts = 0;
-    var timer = setInterval(function () {
-      attempts += 1;
+    function attach() {
       if (window.Ecwid && window.Ecwid.OnAPILoaded && typeof window.Ecwid.OnAPILoaded.add === 'function') {
-        clearInterval(timer);
         window.Ecwid.OnAPILoaded.add(function () {
-          runSafe();
+          cb();
         });
-      } else if (attempts > 120) {
-        clearInterval(timer);
-        runSafe();
+        return true;
       }
-    }, 250);
+      return false;
+    }
+
+    if (attach()) return;
+
+    var timer = setInterval(function () {
+      if (attach()) {
+        clearInterval(timer);
+      }
+    }, 300);
   }
 
   function asNumber(value) {
@@ -709,3 +700,4 @@
 
   init();
 })();
+
