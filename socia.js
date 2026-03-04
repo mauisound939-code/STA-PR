@@ -148,6 +148,17 @@
   }
 
   function resolveStoreContext() {
+    var configuredStoreId = asNumber(SOCIA_CONFIG.storeId);
+    var configuredToken = SOCIA_CONFIG.publicToken ? String(SOCIA_CONFIG.publicToken).trim() : '';
+
+    if (configuredStoreId > 0 && configuredToken) {
+      return {
+        storeId: configuredStoreId,
+        token: configuredToken,
+        apiBase: SOCIA_CONFIG.apiBase || 'https://app.ecwid.com/api/v3'
+      };
+    }
+
     var storeId = detectStoreId();
     var token = detectPublicToken();
 
@@ -712,8 +723,8 @@
     keepMountedInTestMode();
   }
 
-  if (window.Ecwid && Ecwid.OnAPILoaded) {
-    Ecwid.OnAPILoaded.add(function () {
+  if (window.Ecwid && window.Ecwid.OnAPILoaded) {
+    window.Ecwid.OnAPILoaded.add(function () {
       initSOCIA();
     });
   } else {
@@ -722,3 +733,4 @@
     });
   }
 })();
+
