@@ -25,11 +25,8 @@
   var TEST_VALUE = '1';
 
   var SOCIA_CONFIG = {
-    // Optional explicit values (recommended for reliability):
-    // storeId: 1003,
-    // publicToken: 'public_xxxxxxxxxxxxx',
-    storeId: null,
-    publicToken: null,
+    storeId: 129803252,
+    publicToken: public_jHiUPyUbc8tkgmNjDNyRWEMV3xRqsrxz
     apiBase: 'https://app.ecwid.com/api/v3'
   };
 
