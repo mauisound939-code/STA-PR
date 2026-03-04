@@ -26,7 +26,7 @@
 
   var SOCIA_CONFIG = {
     storeId: 129803252,
-    publicToken: "public_jHiUPvUbc8tkgmNjDNvRWEMV3xRqsrxz"
+    publicToken: "public_jHiUPvUbc8tkgmNjDNvRWEMV3xRqsrxz",
     apiBase: 'https://app.ecwid.com/api/v3'
   };
 
