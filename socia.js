@@ -232,16 +232,13 @@
     };
   }
 
-  function flattenCategories(categories, bucket) {
-    (categories || []).forEach(function (cat) {
-      if (!cat) return;
-      if (CATEGORY_NAMES.indexOf(cat.name) >= 0) {
-        bucket[cat.name] = cat.id;
-      }
-      if (Array.isArray(cat.subcategories) && cat.subcategories.length > 0) {
-        flattenCategories(cat.subcategories, bucket);
-      }
-    });
+  function norm(s) {
+    return (s || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
   async function fetchCategoriesMap() {
@@ -258,7 +255,22 @@
     }
 
     var map = {};
-    flattenCategories(all, map);
+    var wanted = CATEGORY_NAMES.map(norm);
+
+    all.forEach(function (cat) {
+      if (!cat || !cat.name) return;
+
+      var normalized = norm(cat.name);
+      var idx = wanted.indexOf(normalized);
+
+      if (idx >= 0) {
+        map[CATEGORY_NAMES[idx]] = cat.id;
+      }
+    });
+
+    console.log('[SOCIA] Categorías totales:', all.length);
+    console.log('[SOCIA] Map encontrado:', map);
+
     return map;
   }
 
@@ -413,12 +425,17 @@
     for (var i = 0; i < selectedCats.length; i += 1) {
       var name = selectedCats[i];
       var categoryId = catMap[name];
+      console.log('[SOCIA] categoria:', name, '-> id:', categoryId);
       if (!categoryId) {
         eligibleByCategory[name] = [];
+        console.log('[SOCIA] productos en', name, ':', 0);
+        console.log('[SOCIA] elegibles en', name, ':', eligibleByCategory[name].length);
         continue;
       }
       var products = await fetchProductsByCategory(categoryId);
+      console.log('[SOCIA] productos en', name, ':', products.length);
       eligibleByCategory[name] = eligibleProducts(products, name);
+      console.log('[SOCIA] elegibles en', name, ':', eligibleByCategory[name].length);
     }
 
     var allocation = allocateBudgets(totalBudget, selectedCats, preferred);
