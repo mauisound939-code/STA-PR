@@ -26,7 +26,7 @@
 
   var SOCIA_CONFIG = {
     storeId: 129803252,
-    publicToken: "public_jHiUPvUbc8tkgmNjDNvRWEMV3xRqsrxz",
+    publicToken: 'public_jHiUPyUbc8tkgmNjDNyRWEMV3xRqsrxz',
     apiBase: 'https://app.ecwid.com/api/v3'
   };
 
@@ -111,13 +111,16 @@
   }
 
   function detectPublicToken() {
-    if (SOCIA_CONFIG.publicToken) return String(SOCIA_CONFIG.publicToken).trim();
+    var configuredToken = SOCIA_CONFIG.publicToken ? String(SOCIA_CONFIG.publicToken).trim() : '';
+    var isPlaceholder = configuredToken === 'public_REPLACE_WITH_REAL_TOKEN';
+    if (configuredToken && !isPlaceholder) return configuredToken;
 
     var candidates = [
       window.ecwid_public_token,
       window.ECWID_PUBLIC_TOKEN,
       window.__ECWID_PUBLIC_TOKEN__,
-      window.ec && window.ec.storefront && window.ec.storefront.publicToken
+      window.ec && window.ec.storefront && window.ec.storefront.publicToken,
+      window.Ecwid && typeof window.Ecwid.getStorefrontToken === 'function' ? window.Ecwid.getStorefrontToken() : ''
     ];
 
     for (var i = 0; i < candidates.length; i += 1) {
@@ -127,6 +130,19 @@
 
     var meta = document.querySelector('meta[name="ecwid-storefront-token"], meta[name="ec-storefront-token"]');
     if (meta && meta.content) return String(meta.content).trim();
+
+    var scriptWithToken = document.querySelector('script[data-storefront-token], script[data-token]');
+    if (scriptWithToken) {
+      var dataToken = scriptWithToken.getAttribute('data-storefront-token') || scriptWithToken.getAttribute('data-token');
+      if (dataToken && String(dataToken).trim()) return String(dataToken).trim();
+    }
+
+    var inlineScripts = document.querySelectorAll('script:not([src])');
+    for (var j = 0; j < inlineScripts.length; j += 1) {
+      var text = inlineScripts[j].textContent || '';
+      var match = text.match(/public_[A-Za-z0-9_-]+/);
+      if (match && match[0]) return match[0];
+    }
 
     return '';
   }
