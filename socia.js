@@ -60,7 +60,12 @@
     storeContext: null
   };
 
-  var CATEGORY_NAMES = ['Anillos', 'Pulseras', 'Dijes', 'Aretes'];
+  var CATEGORY_NAMES = [
+    'Anillos - Plata .925',
+    'Pulseras y Tobilleras - Plata .925',
+    'Dijes - Plata .925',
+    'Aretes - Plata .925'
+  ];
   var ROOT_ID = 'socia-test-root';
   var LAUNCHER_ID = 'socia-test-launcher';
   var MODAL_ID = 'socia-test-modal';
