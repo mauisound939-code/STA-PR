@@ -682,22 +682,27 @@
     observer.observe(document.documentElement, { childList: true, subtree: true });
   }
 
-  function init() {
-    onEcwidReady(async function () {
-      try {
-        STATE.storeContext = resolveStoreContext();
-        STATE.categoriesMap = await fetchCategoriesMap();
-      } catch (e) {
-        STATE.categoriesMap = {};
-        STATE.error = e && e.message ? e.message : 'No fue posible inicializar SOCIA.';
-      }
+  async function initSOCIA() {
+    try {
+      STATE.storeContext = resolveStoreContext();
+      STATE.categoriesMap = await fetchCategoriesMap();
+    } catch (e) {
+      STATE.categoriesMap = {};
+      STATE.error = e && e.message ? e.message : 'No fue posible inicializar SOCIA.';
+    }
 
-      bindEvents();
-      render();
-      keepMountedInTestMode();
-    });
+    bindEvents();
+    render();
+    keepMountedInTestMode();
   }
 
-  init();
+  if (window.Ecwid && Ecwid.OnAPILoaded) {
+    Ecwid.OnAPILoaded.add(function () {
+      initSOCIA();
+    });
+  } else {
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(initSOCIA, 500);
+    });
+  }
 })();
-
