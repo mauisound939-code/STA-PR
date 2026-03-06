@@ -262,7 +262,7 @@
     var all = [];
 
     while (true) {
-      var response = await fetchStorefront('categories', { offset: offset, limit: limit, hidden_categories: true });
+      var response = await fetchStorefront('categories', { offset: offset, limit: limit });
       var items = Array.isArray(response && response.items) ? response.items : [];
       all = all.concat(items);
       if (items.length < limit) break;
@@ -733,4 +733,3 @@
     });
   }
 })();
-
