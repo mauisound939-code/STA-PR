@@ -182,7 +182,6 @@
     }
 
     var query = new URLSearchParams();
-    query.set('token', ctx.token);
     Object.keys(params || {}).forEach(function (key) {
       if (params[key] !== undefined && params[key] !== null) {
         query.set(key, String(params[key]));
@@ -190,7 +189,13 @@
     });
 
     var url = ctx.apiBase.replace(/\/$/, '') + '/' + ctx.storeId + '/' + path.replace(/^\//, '') + '?' + query.toString();
-    var response = await fetch(url, { method: 'GET', credentials: 'omit' });
+    var response = await fetch(url, {
+      method: 'GET',
+      credentials: 'omit',
+      headers: {
+        Authorization: 'Bearer ' + ctx.token
+      }
+    });
     if (!response.ok) {
       throw new Error('Error al leer catálogo de Ecwid (' + response.status + ').');
     }
