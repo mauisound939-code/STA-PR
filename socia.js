@@ -205,26 +205,6 @@
     console.log('[SOCIA] API status (Bearer):', response.status);
     console.log('[SOCIA] API body (Bearer):', bodyText);
 
-    if (response.status === 401 || response.status === 403) {
-      var queryWithToken = new URLSearchParams(query.toString());
-      queryWithToken.set('token', ctx.token);
-      var urlWithToken = baseUrl + '?' + queryWithToken.toString();
-
-      console.log('[SOCIA] API URL (query token fallback):', urlWithToken);
-
-      response = await fetch(urlWithToken, {
-        method: 'GET',
-        credentials: 'omit',
-        headers: {
-          Accept: 'application/json'
-        }
-      });
-
-      bodyText = await response.text();
-      console.log('[SOCIA] API status (query token fallback):', response.status);
-      console.log('[SOCIA] API body (query token fallback):', bodyText);
-    }
-
     if (!response.ok) {
       throw new Error('Error al leer catálogo de Ecwid (' + response.status + ').');
     }
