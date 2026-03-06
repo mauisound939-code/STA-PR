@@ -183,6 +183,7 @@
 
     var query = new URLSearchParams();
     Object.keys(params || {}).forEach(function (key) {
+      if (key === 'token') return;
       if (params[key] !== undefined && params[key] !== null) {
         query.set(key, String(params[key]));
       }
@@ -752,3 +753,4 @@
     });
   }
 })();
+
