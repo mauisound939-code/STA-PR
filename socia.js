@@ -63,6 +63,12 @@
     'Dijes - Plata .925',
     'Aretes - Plata .925'
   ];
+  var SOCIA_SAFE_CATEGORY_MAP = {
+    'Anillos - Plata .925': 197304783,
+    'Pulseras y Tobilleras - Plata .925': 197304784,
+    'Dijes - Plata .925': 197315521,
+    'Aretes - Plata .925': 197303538
+  };
   var ROOT_ID = 'socia-test-root';
   var LAUNCHER_ID = 'socia-test-launcher';
   var MODAL_ID = 'socia-test-modal';
@@ -277,33 +283,14 @@
   }
 
   async function fetchCategoriesMap() {
-    var offset = 0;
-    var limit = 100;
-    var all = [];
-
-    while (true) {
-      var response = await fetchStorefront('categories', { offset: offset, limit: limit });
-      var items = Array.isArray(response && response.items) ? response.items : [];
-      all = all.concat(items);
-      if (items.length < limit) break;
-      offset += limit;
-    }
-
     var map = {};
-    var wanted = CATEGORY_NAMES.map(norm);
-
-    all.forEach(function (cat) {
-      if (!cat || !cat.name) return;
-
-      var normalized = norm(cat.name);
-      var idx = wanted.indexOf(normalized);
-
-      if (idx >= 0) {
-        map[CATEGORY_NAMES[idx]] = cat.id;
+    CATEGORY_NAMES.forEach(function (name) {
+      if (SOCIA_SAFE_CATEGORY_MAP[name]) {
+        map[name] = SOCIA_SAFE_CATEGORY_MAP[name];
       }
     });
 
-    console.log('[SOCIA] Categorías totales:', all.length);
+    console.log('[SOCIA] Categorías totales:', Object.keys(map).length);
     console.log('[SOCIA] Map encontrado:', map);
 
     return map;
@@ -753,3 +740,4 @@
     });
   }
 })();
+
