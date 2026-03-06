@@ -282,6 +282,15 @@
       .trim();
   }
 
+  function resolveSafeCategoryId(categoryName) {
+    var normalized = norm(categoryName);
+    if (normalized.indexOf('anillos') >= 0) return 197304783;
+    if (normalized.indexOf('pulseras') >= 0 || normalized.indexOf('tobilleras') >= 0) return 197304784;
+    if (normalized.indexOf('dijes') >= 0) return 197315521;
+    if (normalized.indexOf('aretes') >= 0) return 197303538;
+    return 0;
+  }
+
   async function fetchCategoriesMap() {
     var map = {};
     CATEGORY_NAMES.forEach(function (name) {
@@ -441,12 +450,11 @@
       throw new Error('Selecciona al menos una categoría.');
     }
 
-    var catMap = STATE.categoriesMap;
     var eligibleByCategory = {};
 
     for (var i = 0; i < selectedCats.length; i += 1) {
       var name = selectedCats[i];
-      var categoryId = catMap[name];
+      var categoryId = resolveSafeCategoryId(name);
       console.log('[SOCIA] categoria:', name, '-> id:', categoryId);
       if (!categoryId) {
         eligibleByCategory[name] = [];
@@ -740,4 +748,3 @@
     });
   }
 })();
-
