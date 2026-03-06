@@ -333,7 +333,7 @@
 
   function eligibleProducts(products, categoryName) {
     return (products || [])
-      .filter(isSociaSafe)
+      // DEBUG TEMP: bypass SOCIA attribute gate to validate recommendation flow
       .filter(function (p) { return !hasVariants(p); })
       .filter(isInStock)
       .map(function (p) { return normalizeProduct(p, categoryName); })
