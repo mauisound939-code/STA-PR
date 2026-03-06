@@ -189,17 +189,30 @@
     });
 
     var url = ctx.apiBase.replace(/\/$/, '') + '/' + ctx.storeId + '/' + path.replace(/^\//, '') + '?' + query.toString();
+    console.log('[SOCIA] API URL:', url);
+
     var response = await fetch(url, {
       method: 'GET',
       credentials: 'omit',
       headers: {
-        Authorization: 'Bearer ' + ctx.token
+        Authorization: 'Bearer ' + ctx.token,
+        Accept: 'application/json'
       }
     });
+
+    var bodyText = await response.text();
+    console.log('[SOCIA] API status:', response.status);
+    console.log('[SOCIA] API body:', bodyText);
+
     if (!response.ok) {
       throw new Error('Error al leer catálogo de Ecwid (' + response.status + ').');
     }
-    return response.json();
+
+    try {
+      return bodyText ? JSON.parse(bodyText) : {};
+    } catch (_) {
+      throw new Error('Respuesta inválida de Ecwid API.');
+    }
   }
 
   function isSociaSafe(product) {
@@ -738,3 +751,4 @@
     });
   }
 })();
+
