@@ -314,7 +314,7 @@
 
     while (true) {
       var response = await fetchStorefront('products', {
-        category: categoryId,
+        categoryId: categoryId,
         enabled: true,
         offset: offset,
         limit: limit
@@ -751,4 +751,3 @@
     });
   }
 })();
-
