@@ -188,8 +188,9 @@
       }
     });
 
-    var url = ctx.apiBase.replace(/\/$/, '') + '/' + ctx.storeId + '/' + path.replace(/^\//, '') + '?' + query.toString();
-    console.log('[SOCIA] API URL:', url);
+    var baseUrl = ctx.apiBase.replace(/\/$/, '') + '/' + ctx.storeId + '/' + path.replace(/^\//, '');
+    var url = baseUrl + '?' + query.toString();
+    console.log('[SOCIA] API URL (Bearer):', url);
 
     var response = await fetch(url, {
       method: 'GET',
@@ -201,8 +202,28 @@
     });
 
     var bodyText = await response.text();
-    console.log('[SOCIA] API status:', response.status);
-    console.log('[SOCIA] API body:', bodyText);
+    console.log('[SOCIA] API status (Bearer):', response.status);
+    console.log('[SOCIA] API body (Bearer):', bodyText);
+
+    if (response.status === 401 || response.status === 403) {
+      var queryWithToken = new URLSearchParams(query.toString());
+      queryWithToken.set('token', ctx.token);
+      var urlWithToken = baseUrl + '?' + queryWithToken.toString();
+
+      console.log('[SOCIA] API URL (query token fallback):', urlWithToken);
+
+      response = await fetch(urlWithToken, {
+        method: 'GET',
+        credentials: 'omit',
+        headers: {
+          Accept: 'application/json'
+        }
+      });
+
+      bodyText = await response.text();
+      console.log('[SOCIA] API status (query token fallback):', response.status);
+      console.log('[SOCIA] API body (query token fallback):', bodyText);
+    }
 
     if (!response.ok) {
       throw new Error('Error al leer catálogo de Ecwid (' + response.status + ').');
