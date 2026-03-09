@@ -77,8 +77,6 @@
   };
   var ROOT_ID = 'socia-test-root';
   var WHOLESALE_DISCOUNT_MULTIPLIER = 2;
-  var LAUNCHER_WRAP_ID = 'socia-launcher-wrap';
-  var LAUNCHER_MASCOT_ID = 'socia-launcher-mascot';
   var LAUNCHER_ID = 'socia-test-launcher';
   var MODAL_ID = 'socia-test-modal';
   var STYLE_ID = 'socia-test-style';
@@ -542,19 +540,14 @@
     style.id = STYLE_ID;
     style.textContent = [
       '#' + ROOT_ID + ' { position: fixed; z-index: 2147483000; font-family: Arial, sans-serif; }',
-      '#' + LAUNCHER_WRAP_ID + ' { position: fixed; right: 18px; bottom: 18px; z-index: 2147483001; display:flex; flex-direction:column; align-items:center; }',
-      '#' + LAUNCHER_MASCOT_ID + ' { width:78px; max-width:78px; height:auto; display:block; margin-bottom:-8px; transform:rotate(-6deg); pointer-events:none; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.12)); }',
-      '#' + LAUNCHER_ID + ' { background:#6687a7; color:#fff; border:none; border-radius:16px; padding:14px 18px 12px; min-width:220px; box-shadow:0 10px 24px rgba(0,0,0,0.16); cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px; text-align:center; animation:sociaPulse 3.2s ease-in-out infinite; }',
-      '#' + LAUNCHER_ID + ':hover { background:#5b7994; }',
-      '.socia-launcher-title { font-size:17px; font-weight:700; line-height:1.2; }',
-      '.socia-launcher-sub { font-size:13px; font-weight:400; line-height:1.2; opacity:.95; }',
+      '#' + LAUNCHER_ID + ' { position: fixed; right: 16px; bottom: 16px; background:#6687a7; color:#fff; border:none; border-radius:999px; padding:12px 18px; font-size:14px; cursor:pointer; box-shadow:0 8px 18px rgba(102,135,167,.28); }',
       '#' + MODAL_ID + ' { position: fixed; inset: 0; background: rgba(17,26,36,.36); display:none; align-items:center; justify-content:center; padding:16px; }',
       '#' + MODAL_ID + '.open { display:flex; }',
       '#socia-card { width:min(900px,96vw); max-height:92vh; overflow:auto; background:#fff; border-radius:22px; padding:30px; box-shadow:0 16px 40px rgba(30,41,59,.18); }',
-      '.socia-brand-header { text-align:center; padding:10px 10px 6px; margin-bottom:8px; border-bottom:1px solid #e8eef3; }',
-      '.socia-brand-image { width:120px; max-width:120px; height:auto; object-fit:contain; display:block; margin:0 auto 6px; }',
-      '.socia-brand-name { font-size:14px; letter-spacing:3px; color:#6687a7; font-weight:700; margin-bottom:2px; }',
-      '.socia-brand-copy { font-size:15px; color:#6c7480; margin-bottom:6px; }',
+      '.socia-brand-header { text-align:center; padding:4px 0 14px; margin-bottom:14px; border-bottom:1px solid #e8eef3; }',
+      '.socia-brand-image { width:min(220px,62vw); max-width:220px; height:auto; display:block; margin:0 auto 8px; }',
+      '.socia-brand-name { font-size:14px; letter-spacing:.16em; color:#6687a7; font-weight:700; margin-bottom:4px; }',
+      '.socia-brand-copy { font-size:14px; color:#6c7480; }',
       '.socia-row { display:flex; gap:12px; flex-wrap:wrap; }',
       '.socia-btn { border:1px solid #dbe4ec; background:#fff; color:#1a1a1a; padding:14px 22px; border-radius:14px; cursor:pointer; min-height:54px; font-size:17px; font-weight:600; transition:.18s ease; }',
       '.socia-btn:hover { transform:translateY(-1px); }',
@@ -589,8 +582,7 @@
       '.socia-cta { margin-top:24px; display:flex; gap:12px; flex-wrap:wrap; }',
       '.socia-progress { height:6px; width:100%; border-radius:999px; background:#eef3f7; overflow:hidden; margin:8px 0 18px; }',
       '.socia-progress-bar { height:100%; border-radius:999px; background:#6687a7; width:0%; transition:width .2s ease; }',
-      '@keyframes sociaPulse { 0% { transform:scale(1); box-shadow:0 10px 24px rgba(0,0,0,0.16); } 50% { transform:scale(1.03); box-shadow:0 14px 28px rgba(0,0,0,0.20); } 100% { transform:scale(1); box-shadow:0 10px 24px rgba(0,0,0,0.16); } }',
-      '@media (max-width: 640px) { #socia-card { padding:20px; border-radius:18px; } #socia-card h3 { font-size:30px; } .socia-brand-image { width:120px; max-width:120px; } #' + LAUNCHER_WRAP_ID + ' { right:12px; bottom:12px; } #' + LAUNCHER_MASCOT_ID + ' { width:64px; max-width:64px; margin-bottom:-6px; } #' + LAUNCHER_ID + ' { min-width:190px; padding:12px 14px 10px; } .socia-launcher-title { font-size:15px; } .socia-launcher-sub { font-size:12px; } .socia-btn { width:100%; justify-content:center; } .socia-card-option { width:100%; min-width:0; } .socia-summary-total { font-size:40px; } }'
+      '@media (max-width: 640px) { #socia-card { padding:20px; border-radius:18px; } #socia-card h3 { font-size:30px; } .socia-brand-image { width:min(170px,66vw); } .socia-btn { width:100%; justify-content:center; } .socia-card-option { width:100%; min-width:0; } .socia-summary-total { font-size:40px; } }'
     ].join('\n');
 
     document.head.appendChild(style);
