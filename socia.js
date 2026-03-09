@@ -593,40 +593,37 @@
     });
   }
 
+  async function addProductsSequentially(products) {
+    for (const product of products) {
+      await new Promise((resolve) => {
+        Ecwid.Cart.addProduct(
+          { id: Number(product.id), quantity: 1 },
+          function () {
+            resolve();
+          }
+        );
+      });
+    }
+  }
+
   async function addAllToCart() {
     if (!STATE.selectedPlan) return;
 
     var products = [];
     Object.keys(STATE.selectedPlan.byCategory).forEach(function (cat) {
       STATE.selectedPlan.byCategory[cat].items.forEach(function (p) {
-        products.push(p);
+        products.push({
+          id: Number(p.id),
+          quantity: 1
+        });
       });
     });
 
     if (!products.length) return;
 
     console.log('SOCIA adding products:', products);
-
-    var addedCount = 0;
-    var skippedCount = 0;
-
-    for (var i = 0; i < products.length; i += 1) {
-      var success = await addOneProductToCart(products[i].id);
-      if (success) addedCount += 1;
-      else skippedCount += 1;
-    }
-
-    if (skippedCount > 0) {
-      STATE.notice = 'Omitimos ' + skippedCount + ' pieza(s) por falta de stock.';
-    } else {
-      STATE.notice = '';
-    }
-
-    if (addedCount > 0 && window.Ecwid && typeof window.Ecwid.openPage === 'function') {
-      window.Ecwid.openPage('cart');
-    }
-
-    render();
+    await addProductsSequentially(products);
+    window.location.href = 'https://sociajoyeria.com/products/cart';
   }
 
   function wizardHtml() {
