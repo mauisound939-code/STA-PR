@@ -538,7 +538,52 @@
 
     var style = document.createElement('style');
     style.id = STYLE_ID;
-    style.textContent = '\n      #' + ROOT_ID + ' { position: fixed; z-index: 2147483000; font-family: Arial, sans-serif; }\n      #' + LAUNCHER_ID + ' { position: fixed; right: 16px; bottom: 16px; background:#111; color:#fff; border:none; border-radius:999px; padding:12px 16px; font-size:14px; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,.25); }\n      #' + MODAL_ID + ' { position: fixed; inset: 0; background: rgba(0,0,0,.45); display:none; align-items:center; justify-content:center; padding:16px; }\n      #' + MODAL_ID + '.open { display:flex; }\n      #socia-card { width:min(860px,96vw); max-height:92vh; overflow:auto; background:#fff; border-radius:20px; padding:28px; box-shadow:0 16px 42px rgba(17,24,39,.18); }\n      .socia-row { display:flex; gap:12px; flex-wrap:wrap; }\n      .socia-btn { border:1px solid #d1d9e8; background:#fff; padding:14px 20px; border-radius:14px; cursor:pointer; min-height:52px; font-size:18px; font-weight:600; }\n      .socia-btn[disabled] { opacity:.55; cursor:not-allowed; }\n      .socia-btn.primary { background:#2563eb; color:#fff; border-color:#2563eb; box-shadow:0 6px 14px rgba(37,99,235,.25); }\n      .socia-btn.selected { border-color:#2563eb; background:#eff6ff; box-shadow:inset 0 0 0 1px #2563eb; }\n      .socia-grid { display:flex; flex-direction:column; gap:12px; }\n      .socia-item { border:1px solid #e6ebf5; border-radius:14px; padding:12px; display:flex; gap:12px; align-items:center; background:#fff; }\n      .socia-item img { width:64px; height:64px; object-fit:cover; border-radius:10px; background:#f5f7fb; }\n      .socia-product-name { font-size:18px; line-height:1.35; color:#111827; }\n      .socia-product-price { font-size:17px; font-weight:700; color:#111827; margin-top:4px; }\n      .socia-muted { color:#5f6b7a; font-size:15px; line-height:1.4; }\n      .socia-error { color:#b00020; margin-top:10px; font-size:15px; }\n      .socia-notice { color:#0b6a0b; margin-top:10px; font-size:15px; }\n      #socia-card h3 { margin:0 0 10px; font-size:34px; line-height:1.1; letter-spacing:-.02em; color:#0f172a; }\n      #socia-card p { margin:0 0 14px; line-height:1.5; font-size:18px; }\n      .socia-btn.chip { padding:10px 14px; min-height:40px; font-size:16px; }\n      .socia-card-option { border:1.5px solid #d1d9e8; border-radius:14px; padding:16px 18px; min-width:190px; text-align:left; font-size:18px; font-weight:600; }\n      .socia-step { margin:10px 0 14px; font-size:18px; color:#334155; }\n      .socia-trust-block { background:#ffffff; border:1px solid #e6ebf5; border-radius:14px; padding:14px 16px; margin:8px 0 16px; }\n      .socia-trust-title { font-size:26px; line-height:1.2; font-weight:700; color:#0f172a; margin:0 0 6px; }\n      .socia-trust-copy { font-size:15px; color:#64748b; }\n      .socia-summary { background:#f8fbff; border:1px solid #dbeafe; border-radius:16px; padding:16px 18px; margin:18px 0 18px; }\n      .socia-summary-label { font-size:15px; color:#475569; }\n      .socia-summary-total { font-size:42px; line-height:1.1; font-weight:800; color:#111827; margin:6px 0; }\n      .socia-summary-helper { font-size:15px; color:#475569; }\n      .socia-summary-secondary { font-size:15px; color:#64748b; margin-top:6px; }\n      .socia-summary-note { font-size:13px; color:#94a3b8; margin-top:8px; }\n      .socia-category-block { margin-top:18px; padding-top:14px; border-top:1px solid #edf1f7; }\n      .socia-category-title { margin:0 0 4px; font-size:22px; color:#0f172a; }\n      .socia-cta { margin-top:22px; display:flex; gap:12px; flex-wrap:wrap; }\n    ';
+    style.textContent = [
+      '#' + ROOT_ID + ' { position: fixed; z-index: 2147483000; font-family: Arial, sans-serif; }',
+      '#' + LAUNCHER_ID + ' { position: fixed; right: 16px; bottom: 16px; background:#6687a7; color:#fff; border:none; border-radius:999px; padding:12px 18px; font-size:14px; cursor:pointer; box-shadow:0 8px 18px rgba(102,135,167,.28); }',
+      '#' + MODAL_ID + ' { position: fixed; inset: 0; background: rgba(17,26,36,.36); display:none; align-items:center; justify-content:center; padding:16px; }',
+      '#' + MODAL_ID + '.open { display:flex; }',
+      '#socia-card { width:min(900px,96vw); max-height:92vh; overflow:auto; background:#fff; border-radius:22px; padding:30px; box-shadow:0 16px 40px rgba(30,41,59,.18); }',
+      '.socia-brand-header { text-align:center; padding:4px 0 14px; margin-bottom:14px; border-bottom:1px solid #e8eef3; }',
+      '.socia-brand-image { width:min(220px,62vw); max-width:220px; height:auto; display:block; margin:0 auto 8px; }',
+      '.socia-brand-name { font-size:14px; letter-spacing:.16em; color:#6687a7; font-weight:700; margin-bottom:4px; }',
+      '.socia-brand-copy { font-size:14px; color:#6c7480; }',
+      '.socia-row { display:flex; gap:12px; flex-wrap:wrap; }',
+      '.socia-btn { border:1px solid #dbe4ec; background:#fff; color:#1a1a1a; padding:14px 22px; border-radius:14px; cursor:pointer; min-height:54px; font-size:17px; font-weight:600; transition:.18s ease; }',
+      '.socia-btn:hover { transform:translateY(-1px); }',
+      '.socia-btn[disabled] { opacity:.55; cursor:not-allowed; }',
+      '.socia-btn.primary { background:#6687a7; color:#fff; border-color:#6687a7; box-shadow:0 8px 18px rgba(102,135,167,.28); }',
+      '.socia-btn.primary:hover { background:#55728e; border-color:#55728e; }',
+      '.socia-btn.selected { border-color:#6687a7; background:#eef3f7; box-shadow:inset 0 0 0 1px #6687a7; }',
+      '.socia-grid { display:flex; flex-direction:column; gap:12px; }',
+      '.socia-item { border:1px solid #dbe4ec; border-radius:16px; padding:14px; display:flex; gap:14px; align-items:center; background:#fff; box-shadow:0 4px 10px rgba(26,26,26,.04); }',
+      '.socia-item img { width:72px; height:72px; object-fit:cover; border-radius:12px; background:#eef3f7; }',
+      '.socia-product-name { font-size:18px; line-height:1.35; color:#1a1a1a; }',
+      '.socia-product-price { font-size:18px; font-weight:700; color:#6687a7; margin-top:4px; }',
+      '.socia-muted { color:#6c7480; font-size:15px; line-height:1.45; }',
+      '.socia-error { color:#b00020; margin-top:10px; font-size:15px; }',
+      '.socia-notice { color:#0b6a0b; margin-top:10px; font-size:15px; }',
+      '#socia-card h3 { margin:0 0 10px; font-size:34px; line-height:1.1; letter-spacing:-.02em; color:#1a1a1a; }',
+      '#socia-card p { margin:0 0 14px; line-height:1.5; font-size:18px; }',
+      '.socia-btn.chip { padding:10px 14px; min-height:40px; font-size:16px; }',
+      '.socia-card-option { border:1.5px solid #dbe4ec; border-radius:14px; padding:18px 20px; min-width:210px; text-align:left; font-size:18px; font-weight:600; }',
+      '.socia-step { margin:10px 0 14px; font-size:18px; color:#495361; }',
+      '.socia-trust-block { background:#f7fafc; border:1px solid #dbe4ec; border-radius:16px; padding:16px 18px; margin:8px 0 16px; }',
+      '.socia-trust-title { font-size:27px; line-height:1.2; font-weight:700; color:#1a1a1a; margin:0 0 6px; }',
+      '.socia-trust-copy { font-size:15px; color:#6c7480; }',
+      '.socia-summary { background:#eef3f7; border:1px solid #dbe4ec; border-radius:18px; padding:18px 20px; margin:18px 0 18px; }',
+      '.socia-summary-label { font-size:15px; color:#4a5563; }',
+      '.socia-summary-total { font-size:44px; line-height:1.05; font-weight:800; color:#1a1a1a; margin:8px 0; }',
+      '.socia-summary-helper { font-size:15px; color:#4a5563; }',
+      '.socia-summary-secondary { font-size:15px; color:#6c7480; margin-top:8px; }',
+      '.socia-summary-note { font-size:13px; color:#8b95a2; margin-top:8px; }',
+      '.socia-category-block { margin-top:20px; padding-top:16px; border-top:1px solid #e7edf3; }',
+      '.socia-category-title { margin:0 0 4px; font-size:22px; color:#1a1a1a; }',
+      '.socia-cta { margin-top:24px; display:flex; gap:12px; flex-wrap:wrap; }',
+      '.socia-progress { height:6px; width:100%; border-radius:999px; background:#eef3f7; overflow:hidden; margin:8px 0 18px; }',
+      '.socia-progress-bar { height:100%; border-radius:999px; background:#6687a7; width:0%; transition:width .2s ease; }',
+      '@media (max-width: 640px) { #socia-card { padding:20px; border-radius:18px; } #socia-card h3 { font-size:30px; } .socia-brand-image { width:min(170px,66vw); } .socia-btn { width:100%; justify-content:center; } .socia-card-option { width:100%; min-width:0; } .socia-summary-total { font-size:40px; } }'
+    ].join('\n');
 
     document.head.appendChild(style);
   }
@@ -691,19 +736,30 @@
     }
   }
 
+
+  function brandHeaderHtml() {
+    return '\n      <div class="socia-brand-header">\n        <img class="socia-brand-image" src="https://i.postimg.cc/1XDvfpYP/LOGOTIPO-Y-MASCOTA-(1).png" alt="SOCIA">\n        <div class="socia-brand-name">SOCIA</div>\n        <div class="socia-brand-copy">Te ayudamos a armar tu surtido</div>\n      </div>\n    ';
+  }
+
+  function progressHtml() {
+    var step = Math.min(6, Math.max(1, asNumber(STATE.step) || 1));
+    var pct = Math.round((step / 6) * 100);
+    return '<div class="socia-progress"><div class="socia-progress-bar" style="width:' + pct + '%"></div></div>';
+  }
+
   function wizardHtml() {
     if (STATE.addingToCart) {
-      return '\n  <h3>¡Estamos armando tu pedido!</h3>\n  <div class="socia-step">Por favor, espera un momento...</div>\n  <div class="socia-muted">Estamos agregando tus productos al carrito.</div>\n  <div style="margin-top:14px">⏳</div>\n';
+      return brandHeaderHtml() + progressHtml() + '\n  <h3>¡Estamos armando tu pedido!</h3>\n  <div class="socia-step">Por favor, espera un momento...</div>\n  <div class="socia-muted">Estamos agregando tus productos al carrito.</div>\n  <div style="margin-top:14px">⏳</div>\n';
     }
     if (STATE.loading || STATE.step === 5) {
-      return '\n        <h3>Estamos armando tu surtido...</h3>\n        <div class="socia-step">Espera un momento.</div>\n        <div style="margin-top:14px">⏳</div>\n      ';
+      return brandHeaderHtml() + progressHtml() + '\n        <h3>Estamos armando tu surtido...</h3>\n        <div class="socia-step">Espera un momento.</div>\n        <div style="margin-top:14px">⏳</div>\n      ';
     }
 
     var budgetValid = asNumber(STATE.budget) > 0;
     var hasCategories = STATE.categories.length > 0;
 
     if (STATE.step === 1) {
-      return '\n        <h3>Arma tu surtido ideal</h3>\n        <p>Elige las categorías que te interesan, escribe tu presupuesto y te mostraremos una propuesta lista para agregar al carrito.</p>\n        <div class="socia-row" style="margin-top:18px">\n          <button class="socia-btn" data-action="close">Cerrar</button>\n          <button class="socia-btn primary" data-action="go" data-step="2">Quiero surtirme</button>\n        </div>\n      ';
+      return brandHeaderHtml() + progressHtml() + '\n        <h3>Arma tu surtido ideal</h3>\n        <p>Elige las categorías que te interesan, escribe tu presupuesto y te mostraremos una propuesta lista para agregar al carrito.</p>\n        <div class="socia-row" style="margin-top:18px">\n          <button class="socia-btn" data-action="close">Cerrar</button>\n          <button class="socia-btn primary" data-action="go" data-step="2">Quiero surtirme</button>\n        </div>\n      ';
     }
 
     if (STATE.step === 2) {
@@ -712,11 +768,11 @@
         return '<button class="socia-btn socia-card-option ' + (STATE.categories.indexOf(cat) >= 0 ? 'selected' : '') + '" data-action="toggle-category" data-value="' + cat + '">' + label + '</button>';
       }).join('');
 
-      return '\n        <h3>¿Qué quieres vender?</h3>\n        <div class="socia-step">Elige una o varias categorías.</div>\n        <div class="socia-row">' + cats + '</div>\n        <div class="socia-row" style="margin-top:18px">\n          <button class="socia-btn" data-action="go" data-step="1">Atrás</button>\n          <button class="socia-btn primary" ' + (hasCategories ? '' : 'disabled') + ' data-action="go" data-step="3">Continuar</button>\n        </div>\n      ';
+      return brandHeaderHtml() + progressHtml() + '\n        <h3>¿Qué quieres vender?</h3>\n        <div class="socia-step">Elige una o varias categorías.</div>\n        <div class="socia-row">' + cats + '</div>\n        <div class="socia-row" style="margin-top:18px">\n          <button class="socia-btn" data-action="go" data-step="1">Atrás</button>\n          <button class="socia-btn primary" ' + (hasCategories ? '' : 'disabled') + ' data-action="go" data-step="3">Continuar</button>\n        </div>\n      ';
     }
 
     if (STATE.step === 3) {
-      return '\n        <h3>¿Cuánto quieres invertir?</h3>\n        <div class="socia-step">Escribe cuánto quieres pagar en total.</div>\n        <div class="socia-muted">Tu descuento de mayoreo ya está contemplado.</div>\n        <input id="socia-budget-input" type="number" min="1" step="1" placeholder="Ej. 300" value="' + asNumber(STATE.budget) + '" style="padding:10px;border:1px solid #ccc;border-radius:10px;width:220px;font-size:15px">\n        <div class="socia-row" style="margin-top:10px">\n          <button class="socia-btn chip" data-action="set-budget" data-value="300">$300</button>\n          <button class="socia-btn chip" data-action="set-budget" data-value="500">$500</button>\n          <button class="socia-btn chip" data-action="set-budget" data-value="1000">$1000</button>\n        </div>\n        <div class="socia-row" style="margin-top:18px">\n          <button class="socia-btn" data-action="go" data-step="2">Atrás</button>\n          <button class="socia-btn primary" ' + (budgetValid ? '' : 'disabled') + ' data-action="go" data-step="4">Continuar</button>\n        </div>\n      ';
+      return brandHeaderHtml() + progressHtml() + '\n        <h3>¿Cuánto quieres invertir?</h3>\n        <div class="socia-step">Escribe cuánto quieres pagar en total.</div>\n        <div class="socia-muted">Tu descuento de mayoreo ya está contemplado.</div>\n        <input id="socia-budget-input" type="number" min="1" step="1" placeholder="Ej. 300" value="' + asNumber(STATE.budget) + '" style="padding:10px;border:1px solid #ccc;border-radius:10px;width:220px;font-size:15px">\n        <div class="socia-row" style="margin-top:10px">\n          <button class="socia-btn chip" data-action="set-budget" data-value="300">$300</button>\n          <button class="socia-btn chip" data-action="set-budget" data-value="500">$500</button>\n          <button class="socia-btn chip" data-action="set-budget" data-value="1000">$1000</button>\n        </div>\n        <div class="socia-row" style="margin-top:18px">\n          <button class="socia-btn" data-action="go" data-step="2">Atrás</button>\n          <button class="socia-btn primary" ' + (budgetValid ? '' : 'disabled') + ' data-action="go" data-step="4">Continuar</button>\n        </div>\n      ';
     }
 
     if (STATE.step === 4) {
@@ -725,7 +781,7 @@
         return '<button class="socia-btn socia-card-option ' + (STATE.preferred.indexOf(cat) >= 0 ? 'selected' : '') + '" data-action="toggle-preferred" data-value="' + cat + '">' + label + '</button>';
       }).join('');
 
-      return '\n        <h3>¿Quieres más de algo?</h3>\n        <div class="socia-step">Opcional. Elige hasta 2.</div>\n        <div class="socia-row">' + pref + '</div>\n        <div class="socia-row" style="margin-top:18px">\n          <button class="socia-btn" data-action="go" data-step="3">Atrás</button>\n          <button class="socia-btn" data-action="skip-priority">Saltar</button>\n          <button class="socia-btn primary" data-action="run">Ver mi propuesta</button>\n        </div>\n      ';
+      return brandHeaderHtml() + progressHtml() + '\n        <h3>¿Quieres más de algo?</h3>\n        <div class="socia-step">Opcional. Elige hasta 2.</div>\n        <div class="socia-row">' + pref + '</div>\n        <div class="socia-row" style="margin-top:18px">\n          <button class="socia-btn" data-action="go" data-step="3">Atrás</button>\n          <button class="socia-btn" data-action="skip-priority">Saltar</button>\n          <button class="socia-btn primary" data-action="run">Ver mi propuesta</button>\n        </div>\n      ';
     }
 
     var plan = STATE.selectedPlan;
@@ -740,7 +796,7 @@
       return '<div class="socia-category-block"><h4 class="socia-category-title">' + label + '</h4><div class="socia-muted">Subtotal: ' + money(block.subtotal) + '</div><div class="socia-grid" style="margin-top:10px">' + (items || '<div class="socia-muted">Sin productos elegibles.</div>') + '</div></div>';
     }).join('');
 
-    return '\n      <div class="socia-trust-block">\n        <div class="socia-trust-title">Tu pedido ya está armado</div>\n        <div class="socia-trust-copy">Ya consideramos tu descuento de mayoreo para calcular tu surtido.</div>\n      </div>\n      <h3>Este es tu surtido recomendado para vender</h3>\n      <div class="socia-step">Listo para agregar a tu carrito.</div>\n      <div class="socia-summary">\n        <div class="socia-summary-label">Tu compra aproximada</div>\n        <div class="socia-summary-total">' + money(plan ? plan.estimatedFinalTotal : 0) + '</div>\n        <div class="socia-summary-helper">con tu descuento de mayoreo</div>\n        <div class="socia-summary-secondary">Precio normal en tienda: ' + money(plan ? plan.total : 0) + '</div>\n        <div class="socia-summary-note">Puede variar un poco al finalizar tu pedido.</div>\n      </div>\n      <div style="margin-top:12px">' + list + '</div>\n      <div class="socia-cta">\n        <button class="socia-btn primary" data-action="add-all">🛒 Agregar todo a mi carrito</button>\n        <button class="socia-btn" data-action="reset">Ajustar mi selección</button>\n      </div>\n    ';
+    return brandHeaderHtml() + progressHtml() + '\n      <div class="socia-trust-block">\n        <div class="socia-trust-title">Tu pedido ya está armado</div>\n        <div class="socia-trust-copy">Ya consideramos tu descuento de mayoreo para calcular tu surtido.</div>\n      </div>\n      <h3>Este es tu surtido recomendado para vender</h3>\n      <div class="socia-step">Listo para agregar a tu carrito.</div>\n      <div class="socia-summary">\n        <div class="socia-summary-label">Tu compra aproximada</div>\n        <div class="socia-summary-total">' + money(plan ? plan.estimatedFinalTotal : 0) + '</div>\n        <div class="socia-summary-helper">con tu descuento de mayoreo</div>\n        <div class="socia-summary-secondary">Precio normal en tienda: ' + money(plan ? plan.total : 0) + '</div>\n        <div class="socia-summary-note">Puede variar un poco al finalizar tu pedido.</div>\n      </div>\n      <div style="margin-top:12px">' + list + '</div>\n      <div class="socia-cta">\n        <button class="socia-btn primary" data-action="add-all">🛒 Agregar todo a mi carrito</button>\n        <button class="socia-btn" data-action="reset">Ajustar mi selección</button>\n      </div>\n    ';
   }
 
   function render() {
