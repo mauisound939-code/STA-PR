@@ -544,7 +544,7 @@
       '#' + ROOT_ID + ' { position: fixed; z-index: 2147483000; font-family: Arial, sans-serif; }',
       '#' + LAUNCHER_WRAP_ID + ' { position: fixed; right: 18px; bottom: 18px; z-index: 2147483001; display:flex; flex-direction:column; align-items:center; }',
       '#' + LAUNCHER_MASCOT_ID + ' { width:78px; max-width:78px; height:auto; display:block; margin-bottom:-8px; transform:rotate(-6deg); pointer-events:none; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.12)); }',
-      '#' + LAUNCHER_ID + ' { background:#6687a7; color:#fff; border:none; border-radius:16px; padding:14px 18px 12px; min-width:220px; box-shadow:0 10px 24px rgba(0,0,0,0.16); cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px; text-align:center; animation:sociaPulse 3.2s ease-in-out infinite; }',
+      '#' + LAUNCHER_ID + ' { background:#6687a7; color:#fff; border:none; border-radius:16px; padding:14px 18px 12px; min-width:220px; box-shadow:0 10px 24px rgba(0,0,0,0.16); cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px; text-align:center; }',
       '#' + LAUNCHER_ID + ':hover { background:#5b7994; }',
       '.socia-launcher-title { font-size:17px; font-weight:700; line-height:1.2; }',
       '.socia-launcher-sub { font-size:13px; font-weight:400; line-height:1.2; opacity:.95; }',
@@ -589,7 +589,6 @@
       '.socia-cta { margin-top:24px; display:flex; gap:12px; flex-wrap:wrap; }',
       '.socia-progress { height:6px; width:100%; border-radius:999px; background:#eef3f7; overflow:hidden; margin:8px 0 18px; }',
       '.socia-progress-bar { height:100%; border-radius:999px; background:#6687a7; width:0%; transition:width .2s ease; }',
-      '@keyframes sociaPulse { 0% { transform:scale(1); box-shadow:0 10px 24px rgba(0,0,0,0.16); } 50% { transform:scale(1.03); box-shadow:0 14px 28px rgba(0,0,0,0.20); } 100% { transform:scale(1); box-shadow:0 10px 24px rgba(0,0,0,0.16); } }',
       '@media (max-width: 640px) { #socia-card { padding:20px; border-radius:18px; } #socia-card h3 { font-size:30px; } .socia-brand-image { width:120px; max-width:120px; } #' + LAUNCHER_WRAP_ID + ' { right:12px; bottom:12px; } #' + LAUNCHER_MASCOT_ID + ' { width:64px; max-width:64px; margin-bottom:-6px; } #' + LAUNCHER_ID + ' { min-width:190px; padding:12px 14px 10px; } .socia-launcher-title { font-size:15px; } .socia-launcher-sub { font-size:12px; } .socia-btn { width:100%; justify-content:center; } .socia-card-option { width:100%; min-width:0; } .socia-summary-total { font-size:40px; } }'
     ].join('\n');
 
@@ -619,11 +618,18 @@
   }
 
   function toggleModal(open) {
-    var modal = document.getElementById(MODAL_ID);
-    if (!modal) return;
-    if (open) modal.classList.add('open');
-    else modal.classList.remove('open');
+  var modal = document.getElementById(MODAL_ID);
+  var launcherWrap = document.getElementById(LAUNCHER_WRAP_ID);
+  if (!modal) return;
+
+  if (open) {
+    modal.classList.add('open');
+    if (launcherWrap) launcherWrap.style.display = 'none';
+  } else {
+    modal.classList.remove('open');
+    if (launcherWrap) launcherWrap.style.display = 'flex';
   }
+}
 
   function setLoading(loading, error) {
     STATE.loading = !!loading;
