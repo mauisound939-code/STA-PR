@@ -544,10 +544,10 @@
       '#' + MODAL_ID + ' { position: fixed; inset: 0; background: rgba(17,26,36,.36); display:none; align-items:center; justify-content:center; padding:16px; }',
       '#' + MODAL_ID + '.open { display:flex; }',
       '#socia-card { width:min(900px,96vw); max-height:92vh; overflow:auto; background:#fff; border-radius:22px; padding:30px; box-shadow:0 16px 40px rgba(30,41,59,.18); }',
-      '.socia-brand-header { text-align:center; padding:4px 0 14px; margin-bottom:14px; border-bottom:1px solid #e8eef3; }',
-      '.socia-brand-image { width:min(220px,62vw); max-width:220px; height:auto; display:block; margin:0 auto 8px; }',
-      '.socia-brand-name { font-size:14px; letter-spacing:.16em; color:#6687a7; font-weight:700; margin-bottom:4px; }',
-      '.socia-brand-copy { font-size:14px; color:#6c7480; }',
+      '.socia-brand-header { text-align:center; padding:10px 10px 6px; margin-bottom:8px; border-bottom:1px solid #e8eef3; }',
+      '.socia-brand-image { width:120px; max-width:120px; height:auto; object-fit:contain; display:block; margin:0 auto 6px; }',
+      '.socia-brand-name { font-size:14px; letter-spacing:3px; color:#6687a7; font-weight:700; margin-bottom:2px; }',
+      '.socia-brand-copy { font-size:15px; color:#6c7480; margin-bottom:6px; }',
       '.socia-row { display:flex; gap:12px; flex-wrap:wrap; }',
       '.socia-btn { border:1px solid #dbe4ec; background:#fff; color:#1a1a1a; padding:14px 22px; border-radius:14px; cursor:pointer; min-height:54px; font-size:17px; font-weight:600; transition:.18s ease; }',
       '.socia-btn:hover { transform:translateY(-1px); }',
@@ -582,7 +582,7 @@
       '.socia-cta { margin-top:24px; display:flex; gap:12px; flex-wrap:wrap; }',
       '.socia-progress { height:6px; width:100%; border-radius:999px; background:#eef3f7; overflow:hidden; margin:8px 0 18px; }',
       '.socia-progress-bar { height:100%; border-radius:999px; background:#6687a7; width:0%; transition:width .2s ease; }',
-      '@media (max-width: 640px) { #socia-card { padding:20px; border-radius:18px; } #socia-card h3 { font-size:30px; } .socia-brand-image { width:min(170px,66vw); } .socia-btn { width:100%; justify-content:center; } .socia-card-option { width:100%; min-width:0; } .socia-summary-total { font-size:40px; } }'
+      '@media (max-width: 640px) { #socia-card { padding:20px; border-radius:18px; } #socia-card h3 { font-size:30px; } .socia-brand-image { width:120px; max-width:120px; } .socia-btn { width:100%; justify-content:center; } .socia-card-option { width:100%; min-width:0; } .socia-summary-total { font-size:40px; } }'
     ].join('\n');
 
     document.head.appendChild(style);
