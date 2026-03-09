@@ -52,6 +52,7 @@
     categoriesMap: {},
     selectedPlan: null,
     loading: false,
+    addingToCart: false,
     error: '',
     notice: '',
     storeContext: null
@@ -654,6 +655,11 @@
 
     if (!products.length) return;
 
+    STATE.addingToCart = true;
+    STATE.error = '';
+    STATE.notice = '';
+    render();
+
     console.log('SOCIA adding products:', products);
 
     try {
@@ -663,13 +669,17 @@
       }, 500);
     } catch (err) {
       console.error('[SOCIA] addAllToCart error:', err);
-      STATE.notice = '';
+      STATE.addingToCart = false;
       STATE.error = err && err.message ? err.message : 'No se pudieron agregar todos los productos al carrito.';
       render();
     }
   }
 
   function wizardHtml() {
+    if (STATE.addingToCart) {
+      return '\n  <h3>¡Estamos armando tu pedido!</h3>\n  <div class="socia-step">Por favor, espera un momento...</div>\n  <div class="socia-muted">Estamos agregando tus productos al carrito.</div>\n  <div style="margin-top:14px">⏳</div>\n';
+    }
+
     var disabledNext2 = asNumber(STATE.budget) < 300;
     var disabledNext3 = STATE.categories.length < 1;
 
@@ -768,6 +778,7 @@
         STATE.notice = '';
         render();
       } else if (action === 'add-all') {
+        if (STATE.addingToCart === true) return;
         addAllToCart();
       }
     });
