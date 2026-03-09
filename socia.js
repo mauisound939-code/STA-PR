@@ -282,6 +282,17 @@
       .trim();
   }
 
+  function shuffle(array) {
+    var arr = array.slice();
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    }
+    return arr;
+  }
+
   function resolveSafeCategoryId(categoryName) {
     var normalized = norm(categoryName);
     if (normalized.indexOf('anillos') >= 0) return 197304783;
@@ -328,13 +339,18 @@
   }
 
   function eligibleProducts(products, categoryName) {
-    return (products || [])
+    var priced = (products || [])
       // DEBUG TEMP: bypass SOCIA attribute gate to validate recommendation flow
       .filter(function (p) { return !hasVariants(p); })
       .filter(isInStock)
       .map(function (p) { return normalizeProduct(p, categoryName); })
-      .filter(function (p) { return p.price > 0; })
-      .sort(function (a, b) { return a.price - b.price; });
+      .filter(function (p) { return p.price > 0; });
+
+    var randomized = shuffle(priced);
+
+    return randomized.sort(function (a, b) {
+      return a.price - b.price;
+    });
   }
 
   function allocateBudgets(totalBudget, categories, preferred) {
