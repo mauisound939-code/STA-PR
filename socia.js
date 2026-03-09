@@ -265,7 +265,7 @@
     }
 
     return {
-      id: product.id,
+      id: Number(product.id || product.productId),
       name: product.name || 'Producto sin nombre',
       price: priceOf(product),
       category: categoryName,
@@ -605,6 +605,8 @@
 
     if (!products.length) return;
 
+    console.log('SOCIA adding products:', products);
+
     var addedCount = 0;
     var skippedCount = 0;
 
@@ -764,4 +766,3 @@
     });
   }
 })();
-
