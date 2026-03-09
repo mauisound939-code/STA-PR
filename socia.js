@@ -76,6 +76,7 @@
     'Aretes - Plata .925': 'Aretes'
   };
   var ROOT_ID = 'socia-test-root';
+  var WHOLESALE_DISCOUNT_MULTIPLIER = 2;
   var LAUNCHER_ID = 'socia-test-launcher';
   var MODAL_ID = 'socia-test-modal';
   var STYLE_ID = 'socia-test-style';
@@ -473,11 +474,13 @@
     }
 
     plan.total = globalTotal;
+    plan.estimatedFinalTotal = plan.total / WHOLESALE_DISCOUNT_MULTIPLIER;
     return plan;
   }
 
   async function buildRecommendation() {
-    var totalBudget = asNumber(STATE.budget);
+    var finalBudget = asNumber(STATE.budget);
+    var totalBudget = finalBudget * WHOLESALE_DISCOUNT_MULTIPLIER;
     var selectedCats = STATE.categories.slice();
     var preferred = STATE.preferred.slice();
 
@@ -514,7 +517,9 @@
       byCategory: byCategory,
       eligibleByCategory: eligibleByCategory,
       total: 0,
-      budget: totalBudget
+      budget: totalBudget,
+      finalBudget: finalBudget,
+      estimatedFinalTotal: 0
     };
 
     return fillRemainingGlobal(plan, totalBudget);
@@ -711,7 +716,7 @@
     }
 
     if (STATE.step === 3) {
-      return '\n        <h3>¿Cuál es tu presupuesto aproximado?</h3>\n        <div class="socia-step">Puedes escribir cualquier monto. $300 es solo una sugerencia.</div>\n        <input id="socia-budget-input" type="number" min="1" step="1" placeholder="Ej. 300" value="' + asNumber(STATE.budget) + '" style="padding:10px;border:1px solid #ccc;border-radius:10px;width:220px;font-size:15px">\n        <div class="socia-row" style="margin-top:10px">\n          <button class="socia-btn chip" data-action="set-budget" data-value="300">$300</button>\n          <button class="socia-btn chip" data-action="set-budget" data-value="500">$500</button>\n          <button class="socia-btn chip" data-action="set-budget" data-value="1000">$1000</button>\n        </div>\n        <div class="socia-row" style="margin-top:18px">\n          <button class="socia-btn" data-action="go" data-step="2">Atrás</button>\n          <button class="socia-btn primary" ' + (budgetValid ? '' : 'disabled') + ' data-action="go" data-step="4">Continuar</button>\n        </div>\n      ';
+      return '\n        <h3>¿Cuál es tu presupuesto final de compra?</h3>\n        <div class="socia-step">Si usas tu cupón de mayoreo, calcularemos tu surtido considerando el 50% de descuento.</div>\n        <div class="socia-muted">Ejemplo: si tu presupuesto final es $300, te mostraremos una propuesta cercana a $600 antes del descuento.</div>\n        <input id="socia-budget-input" type="number" min="1" step="1" placeholder="Ej. 300" value="' + asNumber(STATE.budget) + '" style="padding:10px;border:1px solid #ccc;border-radius:10px;width:220px;font-size:15px">\n        <div class="socia-row" style="margin-top:10px">\n          <button class="socia-btn chip" data-action="set-budget" data-value="300">$300</button>\n          <button class="socia-btn chip" data-action="set-budget" data-value="500">$500</button>\n          <button class="socia-btn chip" data-action="set-budget" data-value="1000">$1000</button>\n        </div>\n        <div class="socia-row" style="margin-top:18px">\n          <button class="socia-btn" data-action="go" data-step="2">Atrás</button>\n          <button class="socia-btn primary" ' + (budgetValid ? '' : 'disabled') + ' data-action="go" data-step="4">Continuar</button>\n        </div>\n      ';
     }
 
     if (STATE.step === 4) {
@@ -735,7 +740,7 @@
       return '<h4>' + label + ' · Subtotal: ' + money(block.subtotal) + '</h4><div class="socia-grid">' + (items || '<div class="socia-muted">Sin productos elegibles.</div>') + '</div>';
     }).join('');
 
-    return '\n      <h3>Tu propuesta está lista</h3>\n      <div class="socia-step">Seleccionamos estas piezas según lo que elegiste.</div>\n      <div class="socia-muted">Total recomendado: ' + money(plan ? plan.total : 0) + ' de ' + money(plan ? plan.budget : 0) + '</div>\n      <div style="margin-top:12px">' + list + '</div>\n      <div class="socia-row" style="margin-top:18px">\n        <button class="socia-btn" data-action="reset">Ajustar mi selección</button>\n        <button class="socia-btn primary" data-action="add-all">Agregar todo al carrito</button>\n      </div>\n    ';
+    return '\n      <h3>Tu propuesta está lista</h3>\n      <div class="socia-step">Seleccionamos estas piezas según lo que elegiste.</div>\n      <div class="socia-muted" style="margin-top:8px">Subtotal en tienda: ' + money(plan ? plan.total : 0) + '</div>\n      <div class="socia-muted">Total estimado con tu cupón de mayoreo: ' + money(plan ? plan.estimatedFinalTotal : 0) + '</div>\n      <div class="socia-muted" style="margin-top:6px">El total final puede variar ligeramente según disponibilidad o ajustes del carrito.</div>\n      <div style="margin-top:12px">' + list + '</div>\n      <div class="socia-row" style="margin-top:18px">\n        <button class="socia-btn" data-action="reset">Ajustar mi selección</button>\n        <button class="socia-btn primary" data-action="add-all">Agregar todo al carrito</button>\n      </div>\n    ';
   }
 
   function render() {
