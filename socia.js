@@ -293,6 +293,23 @@
     return arr;
   }
 
+  function sortByPriceThenShuffleInBuckets(products, bucketSize) {
+    var sorted = (products || []).slice().sort(function (a, b) {
+      return a.price - b.price;
+    });
+
+    var result = [];
+    var size = Math.max(2, Number(bucketSize) || 3);
+
+    for (var i = 0; i < sorted.length; i += size) {
+      var bucket = sorted.slice(i, i + size);
+      var mixed = shuffle(bucket);
+      result = result.concat(mixed);
+    }
+
+    return result;
+  }
+
   function resolveSafeCategoryId(categoryName) {
     var normalized = norm(categoryName);
     if (normalized.indexOf('anillos') >= 0) return 197304783;
@@ -346,11 +363,7 @@
       .map(function (p) { return normalizeProduct(p, categoryName); })
       .filter(function (p) { return p.price > 0; });
 
-    var randomized = shuffle(priced);
-
-    return randomized.sort(function (a, b) {
-      return a.price - b.price;
-    });
+    return sortByPriceThenShuffleInBuckets(priced, 3);
   }
 
   function allocateBudgets(totalBudget, categories, preferred) {
