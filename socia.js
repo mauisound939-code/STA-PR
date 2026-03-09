@@ -45,7 +45,6 @@
 
   var STATE = {
     step: 1,
-    objective: 'empezar',
     budget: 300,
     categories: [],
     preferred: [],
@@ -69,6 +68,12 @@
     'Pulseras y Tobilleras - Plata .925': 197304784,
     'Dijes - Plata .925': 197315521,
     'Aretes - Plata .925': 197303538
+  };
+  var CATEGORY_DISPLAY_MAP = {
+    'Anillos - Plata .925': 'Anillos',
+    'Pulseras y Tobilleras - Plata .925': 'Pulseras y tobilleras',
+    'Dijes - Plata .925': 'Dijes',
+    'Aretes - Plata .925': 'Aretes'
   };
   var ROOT_ID = 'socia-test-root';
   var LAUNCHER_ID = 'socia-test-launcher';
@@ -528,7 +533,7 @@
 
     var style = document.createElement('style');
     style.id = STYLE_ID;
-    style.textContent = '\n      #' + ROOT_ID + ' { position: fixed; z-index: 2147483000; font-family: Arial, sans-serif; }\n      #' + LAUNCHER_ID + ' { position: fixed; right: 16px; bottom: 16px; background:#111; color:#fff; border:none; border-radius:999px; padding:10px 14px; font-size:12px; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,.25); }\n      #' + MODAL_ID + ' { position: fixed; inset: 0; background: rgba(0,0,0,.5); display:none; align-items:center; justify-content:center; padding:16px; }\n      #' + MODAL_ID + '.open { display:flex; }\n      #socia-card { width:min(760px,95vw); max-height:90vh; overflow:auto; background:#fff; border-radius:12px; padding:16px; box-shadow:0 10px 30px rgba(0,0,0,.3); }\n      .socia-row { display:flex; gap:10px; flex-wrap:wrap; }\n      .socia-btn { border:1px solid #ccc; background:#fff; padding:8px 10px; border-radius:8px; cursor:pointer; }\n      .socia-btn[disabled] { opacity:.55; cursor:not-allowed; }\n      .socia-btn.primary { background:#111; color:#fff; border-color:#111; }\n      .socia-btn.selected { border-color:#111; background:#f1f1f1; }\n      .socia-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px; }\n      .socia-item { border:1px solid #eee; border-radius:8px; padding:8px; display:flex; gap:8px; align-items:center; }\n      .socia-item img { width:44px; height:44px; object-fit:cover; border-radius:6px; background:#f5f5f5; }\n      .socia-muted { color:#666; font-size:12px; }\n      .socia-error { color:#b00020; margin-top:8px; }\n      .socia-notice { color:#0b6a0b; margin-top:8px; font-size:13px; }\n      .socia-step { margin:10px 0 14px; font-size:12px; color:#666; }\n    ';
+    style.textContent = '\n      #' + ROOT_ID + ' { position: fixed; z-index: 2147483000; font-family: Arial, sans-serif; }\n      #' + LAUNCHER_ID + ' { position: fixed; right: 16px; bottom: 16px; background:#111; color:#fff; border:none; border-radius:999px; padding:10px 14px; font-size:12px; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,.25); }\n      #' + MODAL_ID + ' { position: fixed; inset: 0; background: rgba(0,0,0,.5); display:none; align-items:center; justify-content:center; padding:16px; }\n      #' + MODAL_ID + '.open { display:flex; }\n      #socia-card { width:min(760px,95vw); max-height:90vh; overflow:auto; background:#fff; border-radius:14px; padding:22px; box-shadow:0 14px 36px rgba(0,0,0,.28); }\n      .socia-row { display:flex; gap:10px; flex-wrap:wrap; }\n      .socia-btn { border:1px solid #d9d9d9; background:#fff; padding:11px 14px; border-radius:10px; cursor:pointer; min-height:44px; font-size:15px; }\n      .socia-btn[disabled] { opacity:.55; cursor:not-allowed; }\n      .socia-btn.primary { background:#111; color:#fff; border-color:#111; }\n      .socia-btn.selected { border-color:#111; background:#f1f1f1; }\n      .socia-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px; }\n      .socia-item { border:1px solid #eee; border-radius:8px; padding:8px; display:flex; gap:8px; align-items:center; }\n      .socia-item img { width:44px; height:44px; object-fit:cover; border-radius:6px; background:#f5f5f5; }\n      .socia-muted { color:#666; font-size:13px; }\n      .socia-error { color:#b00020; margin-top:8px; }\n      .socia-notice { color:#0b6a0b; margin-top:8px; font-size:13px; }\n      #socia-card h3 { margin:0 0 8px; font-size:30px; line-height:1.15; letter-spacing:-.02em; color:#111; }\n      #socia-card p { margin:0 0 12px; line-height:1.5; }\n      .socia-btn.chip { padding:8px 12px; min-height:36px; font-size:14px; }\n      .socia-card-option { border:1px solid #ddd; border-radius:12px; padding:12px 14px; min-width:180px; text-align:left; }\n      .socia-step { margin:12px 0 16px; font-size:13px; color:#666; }\n    ';
 
     document.head.appendChild(style);
   }
@@ -581,12 +586,18 @@
   async function runRecommendation() {
     try {
       STATE.notice = '';
-      setLoading(true, '');
-      STATE.selectedPlan = await buildRecommendation();
+      STATE.error = '';
+      STATE.loading = true;
       STATE.step = 5;
-      setLoading(false, '');
+      render();
+      STATE.selectedPlan = await buildRecommendation();
+      STATE.step = 6;
+      STATE.loading = false;
+      render();
     } catch (err) {
-      setLoading(false, err && err.message ? err.message : 'Error al generar recomendación');
+      STATE.loading = false;
+      STATE.error = err && err.message ? err.message : 'Error al generar recomendación';
+      render();
     }
   }
 
@@ -679,32 +690,37 @@
     if (STATE.addingToCart) {
       return '\n  <h3>¡Estamos armando tu pedido!</h3>\n  <div class="socia-step">Por favor, espera un momento...</div>\n  <div class="socia-muted">Estamos agregando tus productos al carrito.</div>\n  <div style="margin-top:14px">⏳</div>\n';
     }
+    if (STATE.loading || STATE.step === 5) {
+      return '\n        <h3>¡Estamos armando tu propuesta!</h3>\n        <div class="socia-step">Estamos seleccionando piezas según tu presupuesto y categorías.</div>\n        <div style="margin-top:14px">⏳</div>\n      ';
+    }
 
-    var disabledNext2 = asNumber(STATE.budget) < 300;
-    var disabledNext3 = STATE.categories.length < 1;
+    var budgetValid = asNumber(STATE.budget) > 0;
+    var hasCategories = STATE.categories.length > 0;
 
     if (STATE.step === 1) {
-      return '\n        <h3>SOCIA (modo prueba)</h3>\n        <p>Te ayudamos a surtir sin rebasar tu presupuesto.</p>\n        <div class="socia-step">Paso 1 de 4 · Objetivo</div>\n        <div class="socia-row">\n          <button class="socia-btn ' + (STATE.objective === 'empezar' ? 'selected' : '') + '" data-action="set-objective" data-value="empezar">Empezar</button>\n          <button class="socia-btn ' + (STATE.objective === 'surtir' ? 'selected' : '') + '" data-action="set-objective" data-value="surtir">Surtir</button>\n        </div>\n        <div class="socia-row" style="margin-top:14px">\n          <button class="socia-btn" data-action="close">Cerrar</button>\n          <button class="socia-btn primary" data-action="go" data-step="2">Continuar</button>\n        </div>\n      ';
+      return '\n        <h3>Arma tu surtido ideal</h3>\n        <p>Elige las categorías que te interesan, escribe tu presupuesto y te mostraremos una propuesta lista para agregar al carrito.</p>\n        <div class="socia-row" style="margin-top:18px">\n          <button class="socia-btn" data-action="close">Cerrar</button>\n          <button class="socia-btn primary" data-action="go" data-step="2">Quiero surtirme</button>\n        </div>\n      ';
     }
 
     if (STATE.step === 2) {
-      return '\n        <h3>¿Cuál es tu presupuesto?</h3>\n        <div class="socia-step">Paso 2 de 4 · Presupuesto mínimo $300</div>\n        <input id="socia-budget-input" type="number" min="300" step="1" value="' + asNumber(STATE.budget) + '" style="padding:8px;border:1px solid #ccc;border-radius:8px;width:220px">\n        <div class="socia-row" style="margin-top:14px">\n          <button class="socia-btn" data-action="go" data-step="1">Atrás</button>\n          <button class="socia-btn primary" ' + (disabledNext2 ? 'disabled' : '') + ' data-action="go" data-step="3">Continuar</button>\n        </div>\n      ';
+      var cats = CATEGORY_NAMES.map(function (cat) {
+        var label = CATEGORY_DISPLAY_MAP[cat] || cat;
+        return '<button class="socia-btn socia-card-option ' + (STATE.categories.indexOf(cat) >= 0 ? 'selected' : '') + '" data-action="toggle-category" data-value="' + cat + '">' + label + '</button>';
+      }).join('');
+
+      return '\n        <h3>¿Qué te gustaría surtir?</h3>\n        <div class="socia-step">Puedes elegir una o varias categorías.</div>\n        <div class="socia-row">' + cats + '</div>\n        <div class="socia-row" style="margin-top:18px">\n          <button class="socia-btn" data-action="go" data-step="1">Atrás</button>\n          <button class="socia-btn primary" ' + (hasCategories ? '' : 'disabled') + ' data-action="go" data-step="3">Continuar</button>\n        </div>\n      ';
     }
 
     if (STATE.step === 3) {
-      var cats = CATEGORY_NAMES.map(function (cat) {
-        return '<button class="socia-btn ' + (STATE.categories.indexOf(cat) >= 0 ? 'selected' : '') + '" data-action="toggle-category" data-value="' + cat + '">' + cat + '</button>';
-      }).join('');
-
-      return '\n        <h3>Elige categorías (1 a 4)</h3>\n        <div class="socia-step">Paso 3 de 4 · Solo productos SOCIA=SAFE</div>\n        <div class="socia-row">' + cats + '</div>\n        <div class="socia-row" style="margin-top:14px">\n          <button class="socia-btn" data-action="go" data-step="2">Atrás</button>\n          <button class="socia-btn primary" ' + (disabledNext3 ? 'disabled' : '') + ' data-action="go" data-step="4">Continuar</button>\n        </div>\n      ';
+      return '\n        <h3>¿Cuál es tu presupuesto aproximado?</h3>\n        <div class="socia-step">Puedes escribir cualquier monto. $300 es solo una sugerencia.</div>\n        <input id="socia-budget-input" type="number" min="1" step="1" placeholder="Ej. 300" value="' + asNumber(STATE.budget) + '" style="padding:10px;border:1px solid #ccc;border-radius:10px;width:220px;font-size:15px">\n        <div class="socia-row" style="margin-top:10px">\n          <button class="socia-btn chip" data-action="set-budget" data-value="300">$300</button>\n          <button class="socia-btn chip" data-action="set-budget" data-value="500">$500</button>\n          <button class="socia-btn chip" data-action="set-budget" data-value="1000">$1000</button>\n        </div>\n        <div class="socia-row" style="margin-top:18px">\n          <button class="socia-btn" data-action="go" data-step="2">Atrás</button>\n          <button class="socia-btn primary" ' + (budgetValid ? '' : 'disabled') + ' data-action="go" data-step="4">Continuar</button>\n        </div>\n      ';
     }
 
     if (STATE.step === 4) {
       var pref = STATE.categories.map(function (cat) {
-        return '<button class="socia-btn ' + (STATE.preferred.indexOf(cat) >= 0 ? 'selected' : '') + '" data-action="toggle-preferred" data-value="' + cat + '">' + cat + '</button>';
+        var label = CATEGORY_DISPLAY_MAP[cat] || cat;
+        return '<button class="socia-btn socia-card-option ' + (STATE.preferred.indexOf(cat) >= 0 ? 'selected' : '') + '" data-action="toggle-preferred" data-value="' + cat + '">' + label + '</button>';
       }).join('');
 
-      return '\n        <h3>Opcional: Quiero más de…</h3>\n        <div class="socia-step">Paso 4 de 4 · Elige hasta 2 categorías</div>\n        <div class="socia-row">' + pref + '</div>\n        <div class="socia-row" style="margin-top:14px">\n          <button class="socia-btn" data-action="go" data-step="3">Atrás</button>\n          <button class="socia-btn primary" data-action="run">Generar recomendación</button>\n        </div>\n      ';
+      return '\n        <h3>¿Quieres que te recomendemos más de alguna categoría?</h3>\n        <div class="socia-step">Opcional. Puedes elegir hasta 2.</div>\n        <div class="socia-row">' + pref + '</div>\n        <div class="socia-row" style="margin-top:18px">\n          <button class="socia-btn" data-action="go" data-step="3">Atrás</button>\n          <button class="socia-btn" data-action="skip-priority">Saltar</button>\n          <button class="socia-btn primary" data-action="run">Ver mi propuesta</button>\n        </div>\n      ';
     }
 
     var plan = STATE.selectedPlan;
@@ -715,10 +731,11 @@
       var items = block.items.map(function (p) {
         return '<div class="socia-item"><img src="' + (p.image || '') + '" alt=""><div><div>' + p.name + '</div><div class="socia-muted">' + money(p.price) + '</div></div></div>';
       }).join('');
-      return '<h4>' + cat + ' · Subtotal: ' + money(block.subtotal) + '</h4><div class="socia-grid">' + (items || '<div class="socia-muted">Sin productos elegibles.</div>') + '</div>';
+      var label = CATEGORY_DISPLAY_MAP[cat] || cat;
+      return '<h4>' + label + ' · Subtotal: ' + money(block.subtotal) + '</h4><div class="socia-grid">' + (items || '<div class="socia-muted">Sin productos elegibles.</div>') + '</div>';
     }).join('');
 
-    return '\n      <h3>Tu propuesta SOCIA</h3>\n      <div class="socia-muted">Total recomendado: ' + money(plan ? plan.total : 0) + ' de ' + money(plan ? plan.budget : 0) + '</div>\n      <div style="margin-top:10px">' + list + '</div>\n      <div class="socia-row" style="margin-top:14px">\n        <button class="socia-btn" data-action="reset">Volver y ajustar</button>\n        <button class="socia-btn primary" data-action="add-all">Agregar todo al carrito</button>\n      </div>\n    ';
+    return '\n      <h3>Tu propuesta está lista</h3>\n      <div class="socia-step">Seleccionamos estas piezas según lo que elegiste.</div>\n      <div class="socia-muted">Total recomendado: ' + money(plan ? plan.total : 0) + ' de ' + money(plan ? plan.budget : 0) + '</div>\n      <div style="margin-top:12px">' + list + '</div>\n      <div class="socia-row" style="margin-top:18px">\n        <button class="socia-btn" data-action="reset">Ajustar mi selección</button>\n        <button class="socia-btn primary" data-action="add-all">Agregar todo al carrito</button>\n      </div>\n    ';
   }
 
   function render() {
@@ -728,7 +745,7 @@
     var card = document.getElementById('socia-card');
     if (!card) return;
 
-    var body = STATE.loading ? '<h3>Generando recomendación…</h3>' : wizardHtml();
+    var body = wizardHtml();
     if (STATE.error) body += '<div class="socia-error">' + STATE.error + '</div>';
     if (STATE.notice) body += '<div class="socia-notice">' + STATE.notice + '</div>';
 
@@ -762,14 +779,14 @@
         toggleModal(false);
       } else if (action === 'go') {
         goStep(asNumber(target.getAttribute('data-step')));
-      } else if (action === 'set-objective') {
-        STATE.objective = target.getAttribute('data-value') || 'empezar';
-        render();
       } else if (action === 'toggle-category') {
         toggleFromList('categories', target.getAttribute('data-value'), 4);
       } else if (action === 'toggle-preferred') {
         toggleFromList('preferred', target.getAttribute('data-value'), 2);
-      } else if (action === 'run') {
+      } else if (action === 'set-budget') {
+        STATE.budget = asNumber(target.getAttribute('data-value'));
+        render();
+      } else if (action === 'run' || action === 'skip-priority') {
         runRecommendation();
       } else if (action === 'reset') {
         STATE.step = 1;
