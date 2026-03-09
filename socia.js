@@ -458,7 +458,7 @@
   }
 
   async function buildRecommendation() {
-    var totalBudget = Math.max(300, asNumber(STATE.budget));
+    var totalBudget = asNumber(STATE.budget);
     var selectedCats = STATE.categories.slice();
     var preferred = STATE.preferred.slice();
 
@@ -764,3 +764,4 @@
     });
   }
 })();
+
