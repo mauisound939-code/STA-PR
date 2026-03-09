@@ -594,14 +594,33 @@
   }
 
   async function addProductsSequentially(products) {
-    for (const product of products) {
-      await new Promise((resolve) => {
-        Ecwid.Cart.addProduct(
-          { id: Number(product.id), quantity: 1 },
-          function () {
-            resolve();
+    for (var i = 0; i < products.length; i += 1) {
+      await new Promise(function (resolve, reject) {
+        var item = products[i];
+
+        if (!window.Ecwid || !window.Ecwid.Cart || typeof window.Ecwid.Cart.addProduct !== 'function') {
+          reject(new Error('Ecwid Cart API not ready'));
+          return;
+        }
+
+        window.Ecwid.Cart.addProduct({
+          id: Number(item.id),
+          quantity: Number(item.quantity || 1),
+          callback: function (success, product, cart, error) {
+            console.log('[SOCIA] addProduct result:', {
+              requestedId: item.id,
+              success: success,
+              product: product,
+              error: error
+            });
+
+            if (success) {
+              resolve();
+            } else {
+              reject(new Error(error || ('Failed to add product ' + item.id)));
+            }
           }
-        );
+        });
       });
     }
   }
@@ -610,8 +629,9 @@
     if (!STATE.selectedPlan) return;
 
     var products = [];
-    Object.keys(STATE.selectedPlan.byCategory).forEach(function (cat) {
-      STATE.selectedPlan.byCategory[cat].items.forEach(function (p) {
+
+    Object.keys(STATE.selectedPlan.byCategory).forEach(function(cat) {
+      STATE.selectedPlan.byCategory[cat].items.forEach(function(p) {
         products.push({
           id: Number(p.id),
           quantity: 1
@@ -622,8 +642,18 @@
     if (!products.length) return;
 
     console.log('SOCIA adding products:', products);
-    await addProductsSequentially(products);
-    window.location.href = 'https://sociajoyeria.com/products/cart';
+
+    try {
+      await addProductsSequentially(products);
+      setTimeout(function () {
+        window.location.href = 'https://sociajoyeria.com/products/cart';
+      }, 500);
+    } catch (err) {
+      console.error('[SOCIA] addAllToCart error:', err);
+      STATE.notice = '';
+      STATE.error = err && err.message ? err.message : 'No se pudieron agregar todos los productos al carrito.';
+      render();
+    }
   }
 
   function wizardHtml() {
