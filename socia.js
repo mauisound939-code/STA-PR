@@ -312,7 +312,7 @@
 
     while (true) {
       var response = await fetchStorefront('products', {
-        categoryId: categoryId,
+        category: categoryId,
         enabled: true,
         offset: offset,
         limit: limit
